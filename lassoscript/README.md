@@ -1,30 +1,30 @@
 <div style="font-size:2.5em; font-weight:bold; text-align:center; margin-top:20px;">Lasso Regression Implementation</div>
 
 ## 1. Overview
-This directory contains a Python implementation of Lasso Regression, a linear regression technique that performs both variable selection and regularization to enhance prediction accuracy and interpretability of the statistical model.
+This directory contains a Python implementation of Lasso Regression, a linear regression technique that performs both variable selection and regularization to enhance prediction accuracy and interpretability of the statistical model. The implementation uses the diabetes dataset from scikit-learn.
 
 ## 1.1 Files
 - `lasso_regression.py`: Main Python script implementing Lasso Regression
-- `test_lasso_model.py`: Script for testing the trained model with new data
-- `lasso_coefficients.csv`: Output file containing the coefficients of the Lasso model
-- `coefficients_plot.png`: Visualization of the Lasso coefficients
+- `README.md`: Documentation file
 
 ## 1.2 Features
-- Generates synthetic regression data with 1000 samples and 10 features
+- Uses the diabetes dataset from scikit-learn
 - Implements Lasso Regression using scikit-learn with alpha=0.01
 - Performs feature scaling using StandardScaler
 - Uses 80-20 train-test split with random_state=42 for reproducibility
-- Visualizes feature coefficients with a 10x6 figure size
-- Calculates and displays R-squared score
-- Exports feature importance to CSV
-- Generates a bar plot visualization of coefficients
+- Visualizes feature coefficients with a 12x6 figure size
+- Calculates and displays multiple performance metrics:
+  - R-squared score
+  - Mean Squared Error (MSE)
+  - Root Mean Squared Error (RMSE)
+  - Mean Absolute Error (MAE)
+- Displays feature importance sorted by coefficient values
 
 ## 1.3 Implementation Details
-- Data Generation:
-  - 1000 samples
-  - 10 features
-  - Noise level: 0.1
-  - Random state: 42
+- Dataset:
+  - Diabetes dataset from scikit-learn
+  - 10 features (age, sex, BMI, blood pressure, etc.)
+  - Target variable: disease progression
 - Model Parameters:
   - Lasso alpha: 0.01
   - Random state: 42
@@ -33,11 +33,11 @@ This directory contains a Python implementation of Lasso Regression, a linear re
   - Testing: 20%
   - Random state: 42
 - Visualization:
-  - Figure size: 10x6
-  - X-axis: Feature Index
+  - Figure size: 12x6
+  - X-axis: Feature Names
   - Y-axis: Coefficient Value
-  - Title: Lasso Regression Coefficients
-  - Output format: PNG
+  - Title: Lasso Regression Coefficients for Diabetes Dataset
+  - Feature names rotated 45 degrees for better readability
 
 ## 1.4 Dependencies
 - numpy
@@ -52,44 +52,35 @@ This directory contains a Python implementation of Lasso Regression, a linear re
    ```bash
    python lasso_regression.py
    ```
-3. To test the model with new data:
-   ```bash
-   python test_lasso_model.py
-   ```
-4. The scripts will:
-   - Generate and train a Lasso model with alpha=0.01
-   - Display the R-squared score
+3. The script will:
+   - Load and preprocess the diabetes dataset
+   - Train a Lasso model with alpha=0.01
+   - Display performance metrics (MSE, RMSE, MAE, R-squared)
    - Show a bar plot of coefficients
-   - Print feature importance
-   - Save coefficients to CSV
-   - Generate and save a coefficients plot
-   - Test the model with new generated data
-   - Display actual vs predicted values plot
-   - Show performance metrics on new data
+   - Print feature importance sorted by coefficient values
 
 ## 1.6 Output
 - Console output: 
-  - R-squared score
+  - Performance metrics (MSE, RMSE, MAE, R-squared)
   - Feature importance table sorted by coefficient values
 - Visual output: 
-  - Bar plot of Lasso coefficients (10x6 figure)
-  - Saved as `coefficients_plot.png`
-- File output: 
-  - `lasso_coefficients.csv` containing feature coefficients
+  - Bar plot of Lasso coefficients (12x6 figure)
+  - Feature names rotated for better readability
 
 ## 1.7 Performance Metrics
-- R-squared score is calculated on the test set
-- Feature importance is determined by the magnitude of coefficients
-- The model's performance can be assessed through:
-  - R-squared value (closer to 1 indicates better fit)
-  - Coefficient sparsity (number of non-zero coefficients)
-  - Feature importance ranking
+The implementation calculates and displays:
+- Mean Squared Error (MSE)
+- Root Mean Squared Error (RMSE)
+- Mean Absolute Error (MAE)
+- R-squared score
+- Feature importance based on coefficient magnitudes
 
 ## 1.8 Interpretation
-- Positive coefficients indicate positive correlation with the target variable
+- Positive coefficients indicate positive correlation with disease progression
 - Negative coefficients indicate negative correlation
 - Zero coefficients indicate the feature was not selected by the Lasso model
-- The magnitude of coefficients represents the strength of the relationship 
+- The magnitude of coefficients represents the strength of the relationship
+- Feature importance is determined by the absolute value of coefficients
 
 ## 1.9 Testing with New Data
 The `test_lasso_model.py` script provides functionality to:

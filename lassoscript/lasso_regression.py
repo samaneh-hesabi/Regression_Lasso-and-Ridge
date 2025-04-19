@@ -1,14 +1,18 @@
 import numpy as np
 import pandas as pd
-from sklearn.datasets import make_regression
+from sklearn.datasets import load_diabetes
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import Lasso
 from sklearn.preprocessing import StandardScaler
+from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-# Generate sample data
-X, y = make_regression(n_samples=1000, n_features=10, noise=0.1, random_state=42)
+# Load diabetes dataset
+diabetes = load_diabetes()
+X = diabetes.data
+y = diabetes.target
+feature_names = diabetes.feature_names
 
 # Split the data into training and testing sets
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
@@ -25,21 +29,31 @@ lasso.fit(X_train_scaled, y_train)
 # Make predictions
 y_pred = lasso.predict(X_test_scaled)
 
-# Calculate R-squared score
-r2_score = lasso.score(X_test_scaled, y_test)
-print(f"R-squared Score: {r2_score:.4f}")
+# Calculate metrics
+mse = mean_squared_error(y_test, y_pred)
+rmse = np.sqrt(mse)
+mae = mean_absolute_error(y_test, y_pred)
+r2 = r2_score(y_test, y_pred)
+
+# Print metrics
+print(f"Mean Squared Error (MSE): {mse:.4f}")
+print(f"Root Mean Squared Error (RMSE): {rmse:.4f}")
+print(f"Mean Absolute Error (MAE): {mae:.4f}")
+print(f"R-squared Score: {r2:.4f}")
 
 # Plot the coefficients
-plt.figure(figsize=(10, 6))
-plt.bar(range(len(lasso.coef_)), lasso.coef_)
-plt.xlabel('Feature Index')
+plt.figure(figsize=(12, 6))
+plt.bar(feature_names, lasso.coef_)
+plt.xticks(rotation=45)
+plt.xlabel('Features')
 plt.ylabel('Coefficient Value')
-plt.title('Lasso Regression Coefficients')
+plt.title('Lasso Regression Coefficients for Diabetes Dataset')
+plt.tight_layout()
 plt.show()
 
 # Print feature importance
 feature_importance = pd.DataFrame({
-    'Feature': [f'Feature_{i+1}' for i in range(len(lasso.coef_))],
+    'Feature': feature_names,
     'Coefficient': lasso.coef_
 })
 print("\nFeature Importance:")
