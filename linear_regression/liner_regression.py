@@ -2,7 +2,7 @@ import numpy as np
 import pandas as pd
 from sklearn.datasets import load_diabetes
 from sklearn.model_selection import train_test_split
-from sklearn.linear_model import Ridge
+from sklearn.linear_model import LinearRegression
 from sklearn.preprocessing import StandardScaler
 from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
 import matplotlib.pyplot as plt
@@ -17,19 +17,17 @@ feature_names = diabetes.feature_names
 # Split the data into training and testing sets
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
-# Step 1: Learn scaling parameters from training data only
+# Scale the features
 scaler = StandardScaler()
-X_train_scaled = scaler.fit_transform(X_train)  # Learn AND apply
+X_train_scaled = scaler.fit_transform(X_train)
+X_test_scaled = scaler.transform(X_test)
 
-# Step 2: Apply the same scaling to test data
-X_test_scaled = scaler.transform(X_test)  # Only apply, don't learn
-
-# Create and train the Ridge model
-ridge = Ridge(alpha=0.01, random_state=42)
-ridge.fit(X_train_scaled, y_train)
+# Create and train the Linear Regression model
+lr = LinearRegression()
+lr.fit(X_train_scaled, y_train)
 
 # Make predictions
-y_pred = ridge.predict(X_test_scaled)
+y_pred = lr.predict(X_test_scaled)
 
 # Calculate metrics
 mse = mean_squared_error(y_test, y_pred)
@@ -45,18 +43,18 @@ print(f"R-squared Score: {r2:.4f}")
 
 # Plot the coefficients
 plt.figure(figsize=(12, 6))
-plt.bar(feature_names, ridge.coef_)
+plt.bar(feature_names, lr.coef_)
 plt.xticks(rotation=45)
 plt.xlabel('Features')
 plt.ylabel('Coefficient Value')
-plt.title('Ridge Regression Coefficients for Diabetes Dataset')
+plt.title('Linear Regression Coefficients for Diabetes Dataset')
 plt.tight_layout()
 plt.show()
 
 # Print feature importance
 feature_importance = pd.DataFrame({
     'Feature': feature_names,
-    'Coefficient': ridge.coef_
+    'Coefficient': lr.coef_
 })
 print("\nFeature Importance:")
-print(feature_importance.sort_values(by='Coefficient', ascending=False)) 
+print(feature_importance.sort_values(by='Coefficient', ascending=False))
